@@ -48,7 +48,7 @@ class Firecracker
   end
   
   def hash(hash)
-    @hashes = [hash]
+    tap { @hashes = [hash] }
   end
   
 private
