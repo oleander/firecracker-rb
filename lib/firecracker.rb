@@ -11,13 +11,13 @@ class Firecracker
   end
   
   def to_hex(value, max)
-    "%0#{2 * max}s" % value.to_s(16)
+    value.to_s(16).rjust(max * 2, "0")
   end
   
   def send(data)
     puts "IN: '#{data}'"
     sock = UDPSocket.open  
-    sock.send(data, 0, "tracker.ccc.de", 80)
+    sock.send([data].pack("H*"), 0, "tracker.ccc.de", 80)
     resp = if select([sock], nil, nil, 3)
       sock.recvfrom(65536)
     end
@@ -25,17 +25,20 @@ class Firecracker
     return resp
   end
   
+  def transaction_id
+    @_transaction_id ||= to_hex(rand(65535), 4)
+  end
+  
   def process!
     hashes = ""
     @hashes.each do |hash|
-      hashes += [hash].pack("H*")
+      hashes += hash
     end
-
-    transaction_id = [to_hex(rand(65535), 4)].pack("H*")
-    resp           = send([to_hex(4497486125440, 8)].pack("H*") + [to_hex(0, 4)].pack("H*") + transaction_id)
+    
+    resp           = send(to_hex(4497486125440, 8) + to_hex(0, 4) + transaction_id)
     connection_id  = resp.first.unpack("H*").first[16..31]
 
-    data = send([connection_id].pack("H*") + [to_hex(2, 4)].pack("H*") + transaction_id + hashes)
+    data = send(connection_id + to_hex(2, 4) + transaction_id + hashes)
     data = data.first.unpack("H*").first
     index = 16
     results = {}
