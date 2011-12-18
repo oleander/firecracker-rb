@@ -1,47 +1,29 @@
 require "socket"
 require "yaml"
+require "acts_as_chain"
 
 class Firecracker
-  def initialize(hashes)
-    @hashes = hashes
-  end
+  acts_as_chain :tracker, :hashes
   
-  def self.process(*hashes)
-    Firecracker.new(hashes).process!
+  def initialize
+    @socket = UDPSocket.open
   end
-  
-  def to_hex(value, max)
-    value.to_s(16).rjust(max * 2, "0")
-  end
-  
-  def send(data)
-    puts "IN: '#{data}'"
-    sock = UDPSocket.open  
-    sock.send([data].pack("H*"), 0, "tracker.ccc.de", 80)
-    resp = if select([sock], nil, nil, 3)
-      sock.recvfrom(65536)
-    end
-
-    return resp
-  end
-  
-  def transaction_id
-    @_transaction_id ||= to_hex(rand(65535), 4)
-  end
-  
-  def process!
-    hashes = ""
-    @hashes.each do |hash|
-      hashes += hash
+      
+  def process
+    unless [@tracker, @hashes].all?
+      raise "both #tracker and #hashes/#hash must be set"
     end
     
-    resp           = send(to_hex(4497486125440, 8) + to_hex(0, 4) + transaction_id)
-    connection_id  = resp.first.unpack("H*").first[16..31]
-
-    data = send(connection_id + to_hex(2, 4) + transaction_id + hashes)
-    data = data.first.unpack("H*").first
+    hashes = @hashes.join
+    data = send(to_hex(4497486125440, 8) + to_hex(0, 4) + transaction_id)
+    
+    raise "request error" unless data
+    data = send(data[16..31] + to_hex(2, 4) + transaction_id + hashes)
+    raise "request error" unless data
+    
     index = 16
     results = {}
+    
     loop do
       break unless data[index + 23]
 
@@ -62,12 +44,28 @@ class Firecracker
       index += 24
     end
 
-    puts results.to_yaml # =>
-    # --- 
-    # 2bbf3d63e6b313ecf2655067b51e93f17eeeb135: 
-    #   :completed: 77470
-    #   :seeders: 3389
-    #   :leechers: 244
-    #   :hash: 2bbf3d63e6b313ecf2655067b51e93f17eeeb135
+    return @hashes.one? ? results.first.last : results
+  end
+  
+  def hash(hash)
+    @hashes = [hash]
+  end
+  
+private
+  def to_hex(value, max)
+    value.to_s(16).rjust(max * 2, "0")
+  end
+  
+  def send(data)
+    @socket.send([data].pack("H*"), 0, @tracker, 80)
+    resp = if select([@socket], nil, nil, 3)
+      @socket.recvfrom(65536)
+    end
+
+    resp ? resp.first.unpack("H*").first : nil
+  end
+  
+  def transaction_id
+    @_transaction_id ||= to_hex(rand(65535), 4)
   end
 end
