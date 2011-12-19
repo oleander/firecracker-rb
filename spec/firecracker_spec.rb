@@ -1,5 +1,14 @@
 describe Firecracker do
-  it "should run" do
-    puts Firecracker.process("/Users/linus/Downloads/g.torrent").to_yaml
+  use_vcr_cassette "example"
+  
+  let(:keys){
+    [:seeders, :leechers, :completed]
+  }
+  
+  it "should return valid data" do
+    Firecracker.process("spec/fixtures/example.torrent").each_pair do |key, value|
+      keys.should include(key)
+      value.should > 0
+    end
   end
 end
