@@ -6,6 +6,8 @@ require_relative "base"
 
 class TCPScraper < BaseScraper
   def process    
+    raise "both #tracker and #hashes/#hash must be set" unless valid?
+    
     results = {}
     files.keys.each do |key|
       hash = key.unpack("H*").first

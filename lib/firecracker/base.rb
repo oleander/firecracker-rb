@@ -6,4 +6,8 @@ class BaseScraper
   def hash(hash)
     tap { @hashes = [hash] }
   end  
+  
+  def valid?
+    [@tracker, @hashes].all?
+  end
 end

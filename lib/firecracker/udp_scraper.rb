@@ -7,10 +7,8 @@ class UDPScraper < BaseScraper
   end
       
   def process
-    unless [@tracker, @hashes].all?
-      raise "both #tracker and #hashes/#hash must be set"
-    end
-    
+    raise "both #tracker and #hashes/#hash must be set" unless valid?
+
     hashes = @hashes.join
     data = send(to_hex(4497486125440, 8) + to_hex(0, 4) + transaction_id)
     
