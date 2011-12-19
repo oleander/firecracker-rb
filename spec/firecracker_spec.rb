@@ -1,5 +1,5 @@
 describe Firecracker do
   it "should run" do
-    Firecracker.torrent("/Users/linus/Downloads/a.torrent")
+    puts Firecracker.process("/Users/linus/Downloads/g.torrent").to_yaml
   end
 end

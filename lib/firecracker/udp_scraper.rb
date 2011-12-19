@@ -41,6 +41,12 @@ module Firecracker
       end
 
       return @hashes.one? ? results.first.last : results
+    rescue RuntimeError
+      if $!.message == "request error" and debugger?
+        puts URI.parse(@tracker).host
+      end
+      
+      return {}
     end
     
   private
@@ -49,12 +55,19 @@ module Firecracker
     end
   
     def send(data)
-      @socket.send([data].pack("H*"), 0, URI.parse(@tracker).host, 80)
-      resp = if select([@socket], nil, nil, 3)
-        @socket.recvfrom(65536)
-      end
+      Timeout::timeout(1.2) {
+        uri = URI.parse(@tracker)
+        @socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
+        resp = if select([@socket], nil, nil, 3)
+          @socket.recvfrom(65536)
+        end
 
-      resp ? resp.first.unpack("H*").first : nil
+        resp ? resp.first.unpack("H*").first : nil
+      }
+    rescue SocketError
+      puts "SocketError"
+    rescue Timeout::Error
+      puts "Timeout::Error" if debugger?
     end
   
     def transaction_id

@@ -11,5 +11,9 @@ module Firecracker
     def valid?
       [@tracker, @hashes].all?
     end
+    
+    def debugger?
+      defined?(@debugger) and @debugger
+    end
   end
 end
