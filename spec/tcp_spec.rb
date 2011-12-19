@@ -1,9 +1,9 @@
 require "spec_helper"
 require "yaml"
 
-describe TCPScraper do
+describe Firecracker::TCPScraper do
   let(:f) {
-    TCPScraper.new.tracker("tracker.ccc.de/scrape")
+    Firecracker::TCPScraper.new.tracker("tracker.ccc.de/scrape")
   }
   
   it "should return multiply values" do

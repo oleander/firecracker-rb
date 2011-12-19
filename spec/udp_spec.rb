@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe UDPScraper do
+describe Firecracker::UDPScraper do
   let(:f) {
-    UDPScraper.new.tracker("tracker.ccc.de")
+    Firecracker::UDPScraper.new.tracker("tracker.ccc.de")
   }
   
   it "should return multiply values" do
