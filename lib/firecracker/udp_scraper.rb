@@ -1,10 +1,7 @@
 require "socket"
-require "yaml"
-require "acts_as_chain"
+require_relative "base"
 
-class UDPScraper
-  acts_as_chain :tracker, :hashes
-  
+class UDPScraper < BaseScraper
   def initialize
     @socket = UDPSocket.open
   end
@@ -46,11 +43,7 @@ class UDPScraper
 
     return @hashes.one? ? results.first.last : results
   end
-  
-  def hash(hash)
-    tap { @hashes = [hash] }
-  end
-  
+    
 private
   def to_hex(value, max)
     value.to_s(16).rjust(max * 2, "0")
