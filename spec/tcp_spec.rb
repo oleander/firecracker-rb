@@ -1,9 +1,7 @@
 require "spec_helper"
 require "yaml"
 
-describe Firecracker::TCPScraper do
-  use_vcr_cassette "tcp"
-  
+describe Firecracker::TCPScraper do  
   let(:f) {
     Firecracker::TCPScraper.new.tracker("tracker.ccc.de/scrape")
   }
