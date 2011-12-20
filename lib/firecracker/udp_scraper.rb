@@ -12,14 +12,14 @@ module Firecracker
 
       hashes = @hashes.join
       data = send(to_hex(4497486125440, 8) + to_hex(0, 4) + transaction_id)
-    
+      
       raise "request error" unless data
       data = send(data[16..31] + to_hex(2, 4) + transaction_id + hashes)
       raise "request error" unless data
     
       index = 16
       results = {}
-    
+      
       loop do
         break unless data[index + 23]
 
@@ -56,7 +56,12 @@ module Firecracker
   
     def send(data)
       Timeout::timeout(1.2) {
+        unless @tracker =~ /^udp:\/\//
+          @tracker = "udp://#{@tracker}"
+        end
+        
         uri = URI.parse(@tracker)
+                
         @socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
         resp = if select([@socket], nil, nil, 3)
           @socket.recvfrom(65536)
