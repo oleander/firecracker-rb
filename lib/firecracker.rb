@@ -7,41 +7,68 @@ require "uri"
 require "yaml"
 
 module Firecracker
-  def self.process(torrent)
-    torrent       = BEncode::load_file(torrent)
-    hash          = Digest::SHA1.hexdigest(torrent["info"].bencode)
+  def self.raw(raw, protocols = [:udp, :http])
+    Firecracker.torrent(BEncode::load(raw), protocols)
+  end
+  
+  def self.file(torrent, protocols = [:udp, :http])
+    Firecracker.torrent(BEncode::load_file(torrent), protocols)
+  end  
+  
+  def self.udp_trackers(torrent)
     announce      = torrent["announce"]
     announce_list = torrent["announce-list"]
-    
-    # UDP related trackers
+        
     trackers = announce_list.flatten.select{|tracker| tracker.match(/^udp:\/\//)}
     if announce.match(/^udp:\/\//)
       trackers << announce
     end
     
-    results = trackers.map do |tracker|
-      Firecracker::UDPScraper.new.tracker(tracker).hash(hash).process
-    end.reject(&:empty?)
-    
-    # TCP related trackers
-    trackers = announce_list.flatten.select{|tracker| tracker.match(/^http:\/\//) and not tracker.match(%r{thepiratebay})}
-    
-    if announce.match(/^http:\/\//) and not announce.match(%r{thepiratebay})
+    return trackers
+  end
+  
+  def self.http_trackers(torrent)
+    announce      = torrent["announce"]
+    announce_list = torrent["announce-list"]
+        
+    trackers = announce_list.flatten.select{|tracker| tracker.match(/^http:\/\//)}
+    if announce.match(/^http:\/\//)
       trackers << announce
     end
     
-    results += trackers.map do |tracker|
-      tracker.gsub!(/announce/, "scrape")
-      Firecracker::TCPScraper.new.tracker(tracker).hash(hash).process
-    end.reject(&:empty?)
+    # TPB's tracker is no longer active
+    return trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
+  end
+  
+  def self.torrent(torrent, protocols = [:udp, :http])
+    hash          = Digest::SHA1.hexdigest(torrent["info"].bencode)
+    results       = []
+    
+    # UDP related trackers
+    if protocols.include?(:udp)
+      trackers = udp_trackers(torrent)
+    
+      results = trackers.map do |tracker|
+        Firecracker::UDPScraper.new.tracker(tracker).hash(hash).process
+      end.reject(&:empty?)
+    end
+    
+    # TCP related trackers
+    if protocols.include?(:http)
+      trackers = http_trackers(torrent)
+    
+      results += trackers.map do |tracker|
+        Firecracker::TCPScraper.new.tracker(tracker).hash(hash).process
+      end.reject(&:empty?)
+    end
     
     # Sum all data
-    results.inject({
+    return results.inject({
       seeders: 0, 
       leechers: 0, 
       completed: 0
     }) do |result, key|
       result.keys.each {|k| result[k] += key[k].to_i}; result
     end
-  end  
+  end
 end
