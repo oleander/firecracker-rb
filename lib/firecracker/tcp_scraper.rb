@@ -11,17 +11,15 @@ module Firecracker
   class TCPScraper < Firecracker::Base
     def process 
       raise "both #tracker and #hashes/#hash must be set" unless valid?
-    
-      results = {}
+      results = {}      
       files.keys.each do |key|
-        hash = key.unpack("H*").first
         file = files[key]
         results.merge!({
-          hash => {
+          key => {
             completed: file["downloaded"],
             seeders: file["complete"],
             leechers: file["incomplete"],
-            hash: hash
+            hash: key
           }
         })
       end
@@ -35,19 +33,18 @@ module Firecracker
   
   private
     def files
-      if data
+      return {} unless data
+      @_files ||= lambda {
         cd = CharDet.detect(data)
         ic = Iconv.new("#{cd.encoding}//IGNORE", "UTF-8")
         valid_string = ic.iconv(data)
-        valid_string = valid_string.gsub(/d20:(.+)d8/, "d20:#{("a" * 20)}d8")
-        if valid_string.empty?
-          {}
-        else
-          BEncode::load(valid_string)["files"]
-        end
-      else
-        {}
-      end
+        valid_string = valid_string.gsub(/20:(.+?)d8/) {|a| "20:#{random_value}d8" }
+        valid_string.empty? ? {} : BEncode::load(valid_string)["files"]
+      }.call
+    end
+    
+    def random_value(max = 20)
+      (0...max).map{ ("a".."z").to_a[rand(26)] }.join
     end
   
     def hash_info
