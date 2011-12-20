@@ -4,9 +4,9 @@ require File.expand_path('../lib/firecracker/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Linus Oleander"]
   gem.email         = ["linus@oleander.nu"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Implements the UDP/TCP torrent scrape protocol}
+  gem.summary       = %q{Implements the UDP/TCP torrent scrape protocol}
+  gem.homepage      = "https://github.com/oleander.nu/firecracker-rb"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
