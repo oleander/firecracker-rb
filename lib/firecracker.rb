@@ -40,16 +40,19 @@ module Firecracker
     return trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
   end
   
+  def self.hash(torrent)
+    Digest::SHA1.hexdigest(torrent["info"].bencode)
+  end
+  
   def self.torrent(torrent, protocols = [:udp, :http])
-    hash          = Digest::SHA1.hexdigest(torrent["info"].bencode)
-    results       = []
+    results = []
     
     # UDP related trackers
     if protocols.include?(:udp)
       trackers = udp_trackers(torrent)
     
       results = trackers.map do |tracker|
-        Firecracker::UDPScraper.new.tracker(tracker).hash(hash).process
+        Firecracker::UDPScraper.new.tracker(tracker).hash(hash(torrent)).process
       end.reject(&:empty?)
     end
     
@@ -58,7 +61,7 @@ module Firecracker
       trackers = http_trackers(torrent)
     
       results += trackers.map do |tracker|
-        Firecracker::TCPScraper.new.tracker(tracker).hash(hash).process
+        Firecracker::TCPScraper.new.tracker(tracker).hash(hash(torrent)).process
       end.reject(&:empty?)
     end
     
