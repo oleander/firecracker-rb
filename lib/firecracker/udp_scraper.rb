@@ -1,5 +1,4 @@
 require "socket"
-require "io/wait"
 require_relative "base"
 
 module Firecracker
@@ -64,20 +63,10 @@ module Firecracker
         uri = URI.parse(@tracker)
                 
         @socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
-        # if io = IO.wait(3)
-        #     if resp = @socket.recvfrom_nonblock(65536)
-        #       resp.first.unpack("H*").first
-        #     end
-        #   end
-        #   
-        #   return nil
-        
-        resp = if select([@socket])
+        resp = if select([@socket], nil, nil, 3)
           @socket.recvfrom_nonblock(65536)
         end
-        # 
-        # #@socket.close
-        # 
+        
         resp ? resp.first.unpack("H*").first : nil
       }
     rescue SocketError
