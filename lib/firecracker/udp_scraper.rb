@@ -67,6 +67,8 @@ module Firecracker
           @socket.recvfrom_nonblock(65536)
         end
 
+        @socket.close
+        
         resp ? resp.first.unpack("H*").first : nil
       }
     rescue SocketError
