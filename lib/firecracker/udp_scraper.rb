@@ -40,7 +40,7 @@ module Firecracker
         index += 24
       end
 
-      return @hashes.one? ? results.first.last : results
+      return @type == :single ? results.first.last : results
     rescue RuntimeError
       if $!.message == "request error" and debugger?
         puts URI.parse(@tracker).host

@@ -24,8 +24,8 @@ module Firecracker
         })
       end
       
-      if @hashes.one? and results.first
-        results.first.last
+      if @type == :single
+        results.first ? results.first.last : nil
       else
         results
       end

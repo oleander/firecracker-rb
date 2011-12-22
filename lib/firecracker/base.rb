@@ -5,10 +5,12 @@ module Firecracker
     acts_as_chain :tracker, :hashes
     
     def hash(hash)
+      @type = :single
       tap { @hashes = [hash].flatten }
-    end  
+    end
     
     def hashes(*hashes)
+      @type = :multi
       tap { @hashes = hashes.flatten }
     end
   
