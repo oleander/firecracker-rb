@@ -5,8 +5,12 @@ module Firecracker
     acts_as_chain :tracker, :hashes
     
     def hash(hash)
-      tap { @hashes = [hash] }
+      tap { @hashes = [hash].flatten }
     end  
+    
+    def hashes(hashes)
+      tap { @hashes = [hashes].flatten }
+    end
   
     def valid?
       [@tracker, @hashes].all?
