@@ -64,7 +64,7 @@ module Firecracker
                 
         @socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
         resp = if select([@socket], nil, nil, 3)
-          @socket.recvfrom(65536)
+          @socket.recvfrom_nonblock(65536)
         end
 
         resp ? resp.first.unpack("H*").first : nil
