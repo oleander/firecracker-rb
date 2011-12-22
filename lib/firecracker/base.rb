@@ -8,8 +8,8 @@ module Firecracker
       tap { @hashes = [hash].flatten }
     end  
     
-    def hashes(hashes)
-      tap { @hashes = [hashes].flatten }
+    def hashes(*hashes)
+      tap { @hashes = hashes.flatten }
     end
   
     def valid?
