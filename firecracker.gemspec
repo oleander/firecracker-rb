@@ -18,5 +18,4 @@ Gem::Specification.new do |gem|
   gem.add_dependency("bencode")
   gem.add_dependency("rest-client")
   gem.add_dependency("rchardet19")
-  gem.add_dependency("acts_as_chain")
 end
