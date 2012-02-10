@@ -1,5 +1,15 @@
 module Firecracker
   class Base
+    #
+    # @args Hash A bunch of options. 
+    #  Everyting can be passed using the methods listed below
+    # Example:
+    #  {
+    #    tracker: "tracker.ccc.de",
+    #    hashes: ["2bbf3d63e6b313ecf2655067b51e93f17eeeb135"],
+    #    debug: false
+    #  }
+    #
     def initialize(args = {})
       args.keys.each { |name| instance_variable_set "@" + name.to_s, args[name] }
       
@@ -47,14 +57,17 @@ module Firecracker
     #  to do the request.
     #
     def valid?
-      [@tracker, @hashes].all?
+      [
+        defined?(@tracker) and @tracker, 
+        defined?(@hashes) and @hashes
+      ].all?
     end
     
     #
     # @return Should we print debug ouput?
     #
-    def debugger?
-      defined?(@debugger) and @debugger
+    def debug?
+      defined?(@debug) and @debug
     end
   end
 end

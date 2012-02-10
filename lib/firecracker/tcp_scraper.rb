@@ -58,15 +58,15 @@ module Firecracker
         @_data ||= RestClient.get("#{@tracker}?%s" % hash_info, timeout: 2)
       }
     rescue Timeout::Error
-      puts "Timeout::Error" if debugger?
+      puts "Timeout::Error" if debug?
     rescue SocketError
-      puts "SocketError" if debugger?
+      puts "SocketError" if debug?
     rescue RestClient::ResourceNotFound
-      puts "RestClient::ResourceNotFound" if debugger?
+      puts "RestClient::ResourceNotFound" if debug?
     rescue RestClient::BadRequest
-      puts "RestClient::BadReques" if debugger?
+      puts "RestClient::BadReques" if debug?
     rescue Errno::ECONNRESET
-      puts "Errno::ECONNRESET" if debugger?
+      puts "Errno::ECONNRESET" if debug?
     end
   end
 end

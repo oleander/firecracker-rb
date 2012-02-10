@@ -42,7 +42,7 @@ module Firecracker
 
       return @type == :single ? results.first.last : results
     rescue RuntimeError
-      if $!.message == "request error" and debugger?
+      if $!.message == "request error" and debug?
         puts URI.parse(@tracker).host
       end
       
@@ -72,7 +72,7 @@ module Firecracker
     rescue SocketError
       puts "SocketError"
     rescue Timeout::Error
-      puts "Timeout::Error" if debugger?
+      puts "Timeout::Error" if debug?
     end
   
     def transaction_id
