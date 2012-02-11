@@ -2,11 +2,7 @@ require "socket"
 require_relative "base"
 
 module Firecracker
-  class UDPScraper < Firecracker::Base
-    def initialize
-      @socket = UDPSocket.open
-    end
-      
+  class UDPScraper < Firecracker::Base      
     def process
       raise "both #tracker and #hashes/#hash must be set" unless valid?
 
@@ -50,21 +46,29 @@ module Firecracker
     end
     
   private
+    def socket
+      @_socket ||= UDPSocket.open
+    end
+
     def to_hex(value, max)
       value.to_s(16).rjust(max * 2, "0")
     end
   
+    def tracker
+      if @options[:tracker] =~ /^udp:\/\//
+        @options[:tracker]
+      else
+        "udp://#{@options[:tracker]}"
+      end
+    end
+
     def send(data)
-      Timeout::timeout(1.2) {
-        unless @tracker =~ /^udp:\/\//
-          @tracker = "udp://#{@tracker}"
-        end
-        
-        uri = URI.parse(@tracker)
+      Timeout::timeout(@options[:timeout]) {        
+        uri = URI.parse(tracker)
                 
-        @socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
-        resp = if select([@socket], nil, nil, 3)
-          @socket.recvfrom_nonblock(65536)
+        socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)
+        resp = if select([socket], nil, nil, 3)
+          socket.recvfrom_nonblock(65536)
         end
         
         resp ? resp.first.unpack("H*").first : nil
