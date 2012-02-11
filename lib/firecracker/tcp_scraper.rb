@@ -1,46 +1,58 @@
 require "rest-client"
 require "timeout"
-require "bencode"
+#require "bencode"
 require "digest/sha1"
-require "rchardet19"
-require "iconv"
 require "uri"
+require "bencode_ext"
+
 require_relative "base"
 
 module Firecracker
   class TCPScraper < Firecracker::Base
     def process 
       raise "both #tracker and #hashes/#hash must be set" unless valid?
-      results = {}      
-      files.keys.each do |key|
-        file = files[key]
-        results.merge!({
-          key => {
-            completed: file["downloaded"],
-            seeders: file["complete"],
-            leechers: file["incomplete"],
-            hash: key
-          }
-        })
+      
+      results = Hash.new { |h,k| h[k] = 0 }
+      keys = ["downloaded", "complete", "incomplete"]
+      
+      unless files.empty?
+        files.keys.each do |key|
+          file = files[key]
+          results.merge!({
+            key => {
+              completed: file["downloaded"],
+              seeders: file["complete"],
+              leechers: file["incomplete"],
+              hash: key
+            }
+          })
+        end
+        
+        if @type == :single
+          results.first ? results.first.last : nil
+        else
+          results
+        end
+      else
+        if keys.any? { |t| raw_hash.keys.include?(t) }
+          keys.each do |key|
+            results[key.to_sym] += raw_hash[key].to_i
+          end
+        end
+        
+        return results
       end
       
-      if @type == :single
-        results.first ? results.first.last : nil
-      else
-        results
-      end
+
     end
   
   private
     def files
-      return {} unless data
-      @_files ||= lambda {
-        cd = CharDet.detect(data)
-        ic = Iconv.new("#{cd.encoding}//IGNORE", "UTF-8")
-        valid_string = ic.iconv(data)
-        valid_string = valid_string.gsub(/20:(.+?)d8/) {|a| "20:#{random_value}d8" }
-        valid_string.empty? ? {} : BEncode::load(valid_string)["files"]
-      }.call
+      @_files ||= raw_hash["files"] || {}
+    end
+    
+    def raw_hash
+      @_raw_hash ||= (data.nil? or data.empty?) ? {} : data.bdecode || {}
     end
     
     def random_value(max = 20)

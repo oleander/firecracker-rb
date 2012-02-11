@@ -1,7 +1,7 @@
 require "socket"
 require "firecracker/udp_scraper"
 require "firecracker/tcp_scraper"
-require "bencode"
+# require "bencode"
 require "digest/sha1"
 require "uri"
 require "yaml"

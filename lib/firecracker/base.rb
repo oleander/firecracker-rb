@@ -58,8 +58,8 @@ module Firecracker
     #
     def valid?
       [
-        defined?(@tracker) and @tracker, 
-        defined?(@hashes) and @hashes
+        defined?(@tracker) && @tracker, 
+        defined?(@hashes) && @hashes
       ].all?
     end
     
