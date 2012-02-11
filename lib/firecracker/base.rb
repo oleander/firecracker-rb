@@ -11,45 +11,12 @@ module Firecracker
     #  }
     #
     def initialize(args = {})
-      args.keys.each { |name| instance_variable_set "@" + name.to_s, args[name] }
-      
-      @type == :multi
-    end
-    
-    #
-    # @hash String A torrent hash
-    # @return Firecracker::Base
-    # Example:
-    #   2bbf3d63e6b313ecf2655067b51e93f17eeeb135
-    #
-    def hash(hash)
-      @type = :single
-      tap { @hashes = [hash].flatten }
-    end
-    
-    #
-    # @hashes Array<String> A list of torrent hashes
-    # @return Firecracker::Base
-    # Example:
-    #   [2bbf3d63e6b313ecf2655067b51e93f17eeeb135]
-    #
-    def hashes(*hashes)
-      @type = :multi
-      tap { @hashes = hashes.flatten }
-    end
-    
-    #
-    # @tracker String 
-    #  Tracker that should be requested
-    #  TCP tracker should always end with /scrape or similar
-    #  Se example for more info
-    # @return Firecracker::Base
-    # Example:
-    #  "tracker.ccc.de/scrape" (tcp)
-    #   "tracker.ccc.de" (udp)
-    #
-    def tracker(tracker)
-      tap { @tracker = tracker }
+      @options = {
+        debug: false,
+        timeout: 2,
+        tracker: nil,
+        hashes: []
+      }.merge(args)
     end
     
     #
@@ -58,8 +25,8 @@ module Firecracker
     #
     def valid?
       [
-        defined?(@tracker) && @tracker, 
-        defined?(@hashes) && @hashes
+        @options[:tracker],
+        @options[:hashes].any?
       ].all?
     end
     
@@ -67,7 +34,7 @@ module Firecracker
     # @return Should we print debug ouput?
     #
     def debug?
-      defined?(@debug) and @debug
+      @options[:debug]
     end
   end
 end

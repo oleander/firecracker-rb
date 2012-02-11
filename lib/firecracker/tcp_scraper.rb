@@ -8,17 +8,19 @@ require_relative "base"
 
 module Firecracker
   class TCPScraper < Firecracker::Base
-    def process 
+    def process!
       raise "both #tracker and #hashes/#hash must be set" unless valid?
       
       keys = ["downloaded", "complete", "incomplete"]
       results = Hash.new { |h,k| h[k] = keys.include?(k.to_s) ? 0 : nil }
+      
+      make_request! # Fetches main content from server
             
       raise %q{
         Someting went wrong.
         You've passed multiply hashes, but the 
         tracker only responed with one result.
-      } if files.empty? and not @hashes.one?
+      } if files.empty? and not @options[:hashes].one?
       
       if files.empty?
         if keys.any? { |t| raw_hash.keys.include?(t) }
@@ -27,7 +29,9 @@ module Firecracker
           end
         end
         
-        return results
+        return {
+          @options[:hashes].first => results
+        }
       end
       
       files.keys.each do |key|
@@ -63,28 +67,17 @@ module Firecracker
     end
   
     def hash_info
-      @_hash_info ||= @hashes.map! do |hash|
+      @_hash_info ||= @options[:hashes].map! do |hash|
         "info_hash=%s" % URI.encode([hash].pack("H*"))
       end.join("&")
     end
     
     def data
-      Timeout::timeout(1.2) {
-        
-        puts "#{@tracker}?%s" % hash_info
-        
-        @_data ||= RestClient.get("#{@tracker}?%s" % hash_info, timeout: 2)
+      Timeout::timeout(1.2) {        
+        @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: 2)
       }
-    rescue Timeout::Error
-      puts "Timeout::Error" if debug?
-    rescue SocketError
-      puts "SocketError" if debug?
-    rescue RestClient::ResourceNotFound
-      puts "RestClient::ResourceNotFound" if debug?
-    rescue RestClient::BadRequest
-      puts "RestClient::BadReques" if debug?
-    rescue Errno::ECONNRESET
-      puts "Errno::ECONNRESET" if debug?
     end
+    
+    alias_method :make_request!, :data
   end
 end

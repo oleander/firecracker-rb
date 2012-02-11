@@ -1,36 +1,33 @@
 require "spec_helper"
 require "yaml"
 
-describe Firecracker::TCPScraper do  
-  describe "get 'n setter" do
-    let(:f) {
-      Firecracker::TCPScraper.new.tracker("tracker.ccc.de/scrape")
-    }
-
-    it "should return multiply values" do
-      puts f.hashes("2bbf3d63e6b313ecf2655067b51e93f17eeeb135", "3c6a84bc53a91e5ed707091fbd928c91ed0eeacf").process.to_yaml#.keys.count.should eq(2)
-    end
-
-    it "should return a single value" do
-      f.hash("2bbf3d63e6b313ecf2655067b51e93f17eeeb135").process[:completed].should_not be_nil
-    end
-  end
-  
+describe Firecracker::TCPScraper do
   describe "initialize" do
-    let(:f){
+    let(:hashes) { ["c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0"] }
+    let(:raw){
       Firecracker::TCPScraper.new({
         tracker: "exodus.desync.com:6969/announce",
-        hashes: ["c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0"],
+        hashes: hashes,
         debug: true
-      })
+      }).process!
     }
     
-    it "should return multiply values" do
-      puts f.process#.to_yaml
+    let(:values) { raw[raw.keys.first] }
+    
+    it "should match the number of hashes" do
+      raw.should have(1).keys
     end
-
-    it "should return a single value" do
-      # f.hash("2bbf3d63e6b313ecf2655067b51e93f17eeeb135").process[:completed].should_not be_nil
+    
+    it "should have 3 categories" do
+      values.keys.each do |key|
+        [:downloaded, :complete, :incomplete].should include(key)
+      end
+    end
+    
+    it "should only contain values greater than zero" do
+      values.keys.each do |key|
+        values[key].should > 0
+      end
     end
   end
 end
