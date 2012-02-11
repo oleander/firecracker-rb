@@ -21,8 +21,9 @@ module Firecracker
     def process!
       raise "both #tracker and #hashes/#hash must be set" unless valid?
       
-      keys = ["downloaded", "complete", "incomplete"]
-      results = Hash.new { |h,k| h[k] = keys.include?(k.to_s) ? 0 : nil }
+      keys    = ["downloaded", "complete", "incomplete"]
+      map     = {:complete => :seeders, :incomplete => :leechers, :downloaded => :downloads} 
+      results = Hash.new { |h,k| h[k] = 0 }
       
       raise %q{
         Someting went wrong.
@@ -31,10 +32,9 @@ module Firecracker
       } if files.empty? and not @options[:hashes].one?
       
       if files.empty?
-        if keys.any? { |t| raw_hash.keys.include?(t) }
-          keys.each do |key|
-            results[key.to_sym] += raw_hash[key].to_i
-          end
+        keys.each do |key|
+          replace = map[key.to_sym] ? map[key.to_sym] : key
+          results[replace.to_sym] += raw_hash[key].to_i
         end
         
         return {
@@ -46,22 +46,30 @@ module Firecracker
         file = files[key]
         results.merge!({
           key => {
-            completed: file["downloaded"],
+            downloads: file["downloaded"],
             seeders: file["complete"],
-            leechers: file["incomplete"],
-            hash: key
+            leechers: file["incomplete"]
           }
         })
       end
+      
+      return results
     end
       
     private
       def files
         @_files ||= raw_hash["files"] || {}
       end
-  
+      
       def raw_hash
-        @_raw_hash ||= (data.nil? or data.empty?) ? {} : data.bdecode || {}
+        @_raw_hash ||= if data.nil? or data.empty?
+          {}
+        else
+          data.gsub(/20:(.+?)d8/) do |m| 
+            d = m.unpack("H*").first 
+            "#{d.length}:#{d}d8"
+          end.bdecode || {}
+        end
       end
   
       def random_value(max = 20)
@@ -69,7 +77,7 @@ module Firecracker
       end
 
       def hash_info
-        @_hash_info ||= @options[:hashes].map! do |hash|
+        @_hash_info ||= @options[:hashes].map do |hash|
           "info_hash=%s" % URI.encode([hash].pack("H*"))
         end.join("&")
       end
@@ -84,6 +92,6 @@ module Firecracker
         Timeout::timeout(@options[:timeout]) {
           @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: @options[:timeout])
         }
-      end    
+      end
     end
 end
