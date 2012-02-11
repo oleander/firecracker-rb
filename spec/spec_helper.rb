@@ -1,6 +1,7 @@
 require "rspec"
 require "webmock/rspec"
 require "vcr"
+require "yaml"
 require "firecracker"
 
 RSpec.configure do |config|

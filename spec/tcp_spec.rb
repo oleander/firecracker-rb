@@ -1,6 +1,3 @@
-require "spec_helper"
-require "yaml"
-
 describe Firecracker::TCPScraper do
   describe "single file" do
     # use_vcr_cassette "example1" Doesn't work for some reason
