@@ -1,6 +1,5 @@
 require "rest-client"
 require "timeout"
-#require "bencode"
 require "digest/sha1"
 require "uri"
 require "bencode_ext"
@@ -12,28 +11,16 @@ module Firecracker
     def process 
       raise "both #tracker and #hashes/#hash must be set" unless valid?
       
-      results = Hash.new { |h,k| h[k] = 0 }
       keys = ["downloaded", "complete", "incomplete"]
+      results = Hash.new { |h,k| h[k] = keys.include?(k.to_s) ? 0 : nil }
+            
+      raise %q{
+        Someting went wrong.
+        You've passed multiply hashes, but the 
+        tracker only responed with one result.
+      } if files.empty? and not @hashes.one?
       
-      unless files.empty?
-        files.keys.each do |key|
-          file = files[key]
-          results.merge!({
-            key => {
-              completed: file["downloaded"],
-              seeders: file["complete"],
-              leechers: file["incomplete"],
-              hash: key
-            }
-          })
-        end
-        
-        if @type == :single
-          results.first ? results.first.last : nil
-        else
-          results
-        end
-      else
+      if files.empty?
         if keys.any? { |t| raw_hash.keys.include?(t) }
           keys.each do |key|
             results[key.to_sym] += raw_hash[key].to_i
@@ -43,7 +30,23 @@ module Firecracker
         return results
       end
       
-
+      files.keys.each do |key|
+        file = files[key]
+        results.merge!({
+          key => {
+            completed: file["downloaded"],
+            seeders: file["complete"],
+            leechers: file["incomplete"],
+            hash: key
+          }
+        })
+      end
+      
+      if @type == :single
+        results.first ? results.first.last : nil
+      else
+        results
+      end
     end
   
   private
