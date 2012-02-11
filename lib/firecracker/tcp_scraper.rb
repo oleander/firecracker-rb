@@ -70,6 +70,9 @@ module Firecracker
     
     def data
       Timeout::timeout(1.2) {
+        
+        puts "#{@tracker}?%s" % hash_info
+        
         @_data ||= RestClient.get("#{@tracker}?%s" % hash_info, timeout: 2)
       }
     rescue Timeout::Error
