@@ -8,14 +8,22 @@ require_relative "base"
 
 module Firecracker
   class TCPScraper < Firecracker::Base
+    #
+    # @return Hash
+    #   Example: {
+    #     c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0: {
+    #       downloaded: 123,
+    #       complete: 456,
+    #       incomplete: 789
+    #     }
+    #   }
+    #
     def process!
       raise "both #tracker and #hashes/#hash must be set" unless valid?
       
       keys = ["downloaded", "complete", "incomplete"]
       results = Hash.new { |h,k| h[k] = keys.include?(k.to_s) ? 0 : nil }
       
-      make_request! # Fetches main content from server
-            
       raise %q{
         Someting went wrong.
         You've passed multiply hashes, but the 
@@ -45,39 +53,37 @@ module Firecracker
           }
         })
       end
+    end
       
-      if @type == :single
-        results.first ? results.first.last : nil
-      else
-        results
+    private
+      def files
+        @_files ||= raw_hash["files"] || {}
       end
-    end
   
-  private
-    def files
-      @_files ||= raw_hash["files"] || {}
-    end
-    
-    def raw_hash
-      @_raw_hash ||= (data.nil? or data.empty?) ? {} : data.bdecode || {}
-    end
-    
-    def random_value(max = 20)
-      (0...max).map{ ("a".."z").to_a[rand(26)] }.join
-    end
+      def raw_hash
+        @_raw_hash ||= (data.nil? or data.empty?) ? {} : data.bdecode || {}
+      end
   
-    def hash_info
-      @_hash_info ||= @options[:hashes].map! do |hash|
-        "info_hash=%s" % URI.encode([hash].pack("H*"))
-      end.join("&")
+      def random_value(max = 20)
+        (0...max).map{ ("a".."z").to_a[rand(26)] }.join
+      end
+
+      def hash_info
+        @_hash_info ||= @options[:hashes].map! do |hash|
+          "info_hash=%s" % URI.encode([hash].pack("H*"))
+        end.join("&")
+      end
+  
+      #
+      # Sometime, I'm not sure when, the timeout value
+      # passed to RestClient is ignored. That is why
+      # the hole method is wrapped inside a Timeout block.
+      # Is there a better solution?
+      #
+      def data
+        Timeout::timeout(@options[:timeout]) {
+          @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: @options[:timeout])
+        }
+      end    
     end
-    
-    def data
-      Timeout::timeout(1.2) {        
-        @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: 2)
-      }
-    end
-    
-    alias_method :make_request!, :data
-  end
 end
