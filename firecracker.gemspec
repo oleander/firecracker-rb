@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["linus@oleander.nu"]
   gem.description   = %q{An implementation of the UDP/TCP torrent scrape protocol}
   gem.summary       = %q{An implementation of the UDP/TCP torrent scrape protocol}
-  gem.homepage      = "https://github.com/oleander.nu/firecracker-rb"
+  gem.homepage      = "https://github.com/oleander/firecracker-rb"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
