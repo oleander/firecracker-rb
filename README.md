@@ -16,8 +16,8 @@ All methods below returns a hash similar to this one.
 
 ### Specify a protocol
 
-A second argument may be passed to `load`, `raw` and `calculate` to specify what protocol to use.
-An example argument would look like this `[:tcp, :udp]`, both tcp and udp are defaults.
+A second argument may be passed to `load`, `raw` and `calculate` to specify which protocol to use.
+An example argument would look like this: `[:tcp, :udp]`, both tcp and udp are defaults.
 
 ### A local torrent file
 
@@ -32,9 +32,7 @@ torrent = RestClient.get("http://mysite.com/file.torrent")
 Firecracker.raw(torrent)
 ```
 
-### A String#bdecode Hash
-
-You can always pass a bdecoded hash if you by any chance have access to the raw stuff.
+### A String#bdecode hash
 
 ``` ruby
 torrent = RestClient.get("http://mysite.com/file.torrent")
@@ -43,7 +41,7 @@ Firecracker.calculate(torrent.bdecode)
 
 ## Helper methods
 
-Ingoing argument (`torrent`) is from now on a [String#bdecode](https://github.com/naquad/bencode_ext) Hash.
+Ingoing argument (`torrent`) is from now on a [String#bdecode](https://github.com/naquad/bencode_ext) hash.
 
 ``` ruby
 require "bencode_ext"
@@ -69,7 +67,7 @@ Firecracker.tcp_trackers(torrent)
 
 ## UDP/TCP requests
 
-If you for want to define your own server or/and protocol you can do it using the [TCPScraper](https://github.com/oleander/firecracker/blob/master/lib/firecracker/tcp_scraper.rb) and [UDPScraper](https://github.com/oleander/firecracker/blob/master/lib/firecracker/udp_scraper.rb) classes.
+If you want to define your own server or/and protocol you can do this using the [TCPScraper](https://github.com/oleander/firecracker/blob/master/lib/firecracker/tcp_scraper.rb) and [UDPScraper](https://github.com/oleander/firecracker/blob/master/lib/firecracker/udp_scraper.rb) classes.
 
 The hash being passed is a [info_hash](http://wiki.theory.org/BitTorrent_Tracker_Protocol) string.
 
