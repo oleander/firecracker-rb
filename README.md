@@ -9,7 +9,7 @@ All methods below returns a hash similar to this one.
 ``` ruby
 {
   seeders: 123,
-  leechers, 456
+  leechers: 456,
   downloads: 789
 }
 ```
