@@ -1,8 +1,10 @@
+require "bencode_ext"
+require "timeout"
+
 module Firecracker
   class Base
     #
-    # @args Hash A bunch of options. 
-    #  Everyting can be passed using the methods listed below
+    # @args Hash A bunch of options
     # Example:
     #  {
     #    tracker: "tracker.ccc.de",
@@ -26,7 +28,7 @@ module Firecracker
     def valid?
       [
         @options[:tracker],
-        @options[:hashes].any?
+        @options[:hashes].count.between?(1, 72)
       ].all?
     end
     

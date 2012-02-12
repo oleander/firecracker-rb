@@ -1,8 +1,5 @@
 require "rest-client"
-require "timeout"
-require "digest/sha1"
 require "uri"
-require "bencode_ext"
 require_relative "base"
 
 module Firecracker

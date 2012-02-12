@@ -2,6 +2,7 @@ require "socket"
 require "firecracker/udp_scraper"
 require "firecracker/tcp_scraper"
 require "digest/sha1"
+require "bencode_ext"
 require "uri"
 
 module Firecracker
