@@ -6,22 +6,63 @@ require "uri"
 
 module Firecracker
   #
-  # @torrent String A raw torrent file.
-  # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
-  # @return Hash Seeders, leechers and the amounts of downloads
-  #
-  def self.raw(raw, protocols = [:udp, :tcp])
-    Firecracker.torrent(raw.bdecode, protocols)
-  end
-  
-  #
   # @torrent String Path to a torrent file
   # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
   # @return Hash Seeders, leechers and the amounts of downloads
   #
   def self.load(torrent, protocols = [:udp, :tcp])
     Firecracker.raw(File.read(torrent))
-  end  
+  end
+  
+  #
+  # @torrent String A raw torrent file.
+  # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
+  # @return Hash Seeders, leechers and the amounts of downloads
+  #
+  def self.raw(raw, protocols = [:udp, :tcp])
+    Firecracker.calculate(raw.bdecode, protocols)
+  end
+  
+  #
+  # @torrent Hash A Torrent hash generated using String#bdecode
+  # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
+  # @return Hash Seeders, leechers and the amounts of downloads
+  #
+  def self.calculate(torrent, protocols = [:udp, :tcp])    
+    raise "At least one protocol needs to be passed" if protocols.empty?
+    
+    # UDP related trackers
+    if protocols.include?(:udp)
+      trackers = udp_trackers(torrent)      
+      udp_results = trackers.map do |tracker|
+        begin
+          Firecracker::UDPScraper.new({
+            tracker: tracker,
+            hashes: [hash(torrent)]
+          }).process!
+        rescue
+          # raise $! unless silent
+        end
+      end.reject(&:nil?).map(&:values).flatten
+    end
+    
+    # TCP related trackers
+    if protocols.include?(:tcp)
+      trackers = tcp_trackers(torrent)
+      tcp_results = trackers.map do |tracker|
+        begin
+          Firecracker::TCPScraper.new({
+            tracker: tracker,
+            hashes: [hash(torrent)]
+          }).process!
+        rescue
+          # raise $! unless silent
+        end
+      end.reject(&:nil?).map(&:values).flatten
+    end
+
+    (tcp_results + udp_results).inject{ |memo, el| memo.merge(el){ |k, old_v, new_v| old_v + new_v } }
+  end
   
   #
   # @torrent Hash A Torrent hash generated using String#bdecode
@@ -63,47 +104,5 @@ module Firecracker
   #
   def self.hash(torrent)
     Digest::SHA1.hexdigest(torrent["info"].bencode)
-  end
-  
-  #
-  # @torrent Hash A Torrent hash generated using String#bdecode
-  # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
-  # @return Hash Seeders, leechers and the amounts of downloads
-  #
-  def self.torrent(torrent, protocols = [:udp, :tcp])    
-    raise "At least one protocol needs to be passed" if protocols.empty?
-    
-    # UDP related trackers
-    if protocols.include?(:udp)
-      trackers = udp_trackers(torrent)      
-      udp_results = trackers.map do |tracker|
-        begin
-          Firecracker::UDPScraper.new({
-            tracker: tracker,
-            hashes: [hash(torrent)]
-          }).process!
-        rescue
-          # raise $! unless silent
-        end
-      end.reject(&:nil?).map(&:values).flatten
-    end
-    
-    # TCP related trackers
-    if protocols.include?(:tcp)
-      trackers = tcp_trackers(torrent)
-    
-      tcp_results = trackers.map do |tracker|
-        begin
-          Firecracker::TCPScraper.new({
-            tracker: tracker,
-            hashes: [hash(torrent)]
-          }).process!
-        rescue
-          # raise $! unless silent
-        end
-      end.reject(&:nil?).map(&:values).flatten
-    end
-
-    (tcp_results + udp_results).inject{ |memo, el| memo.merge(el){ |k, old_v, new_v| old_v + new_v } }
   end
 end
