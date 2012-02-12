@@ -1,20 +1,31 @@
 require "spec_helper"
 
 describe Firecracker::UDPScraper do
-  let(:hashes) { ["0ef176d06f3053375d93eebe43608dfbec053e3c"] }
+  let(:hashes) { ["523d83e8aee1a979e66584b5304d2e8fdc9a1675"] }
 
   let(:raw){
     Firecracker::UDPScraper.new({
-      tracker: "tracker.ccc.de:80",
+      tracker: "tracker.openbittorrent.com",
        hashes: hashes
     }).process!
   }
   
-  it "should return multiply values" do
-    #f.hashes("2bbf3d63e6b313ecf2655067b51e93f17eeeb135", "2bbf3d62e6b313ecf2655067b51e93f17eeeb135").process.keys.count.should eq(2)
+  let(:values) { raw[raw.keys.first] }
+  
+  it "should match the number of hashes" do
+    raw.should have(1).keys
+    raw.keys.first.should eq(hashes.first)
   end
   
-  it "should return a single value" do
-    #f.hash("2bbf3d63e6b313ecf2655067b51e93f17eeeb135").process[:completed].should_not be_nil
+  it "should have 3 categories" do
+    values.keys.each do |key|
+      [:downloads, :seeders, :leechers].should include(key)
+    end
+  end
+  
+  it "should only contain values greater than zero" do
+    values.keys.each do |key|
+      values[key].should > 0
+    end
   end
 end
