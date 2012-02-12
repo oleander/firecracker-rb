@@ -25,6 +25,10 @@ module Firecracker
     Firecracker.raw(File.read(torrent))
   end  
   
+  #
+  # @torrent Hash A Torrent hash generated using String#bdecode
+  # @return Array<String> A list of UDP trackers for the given torrent
+  #
   def self.udp_trackers(torrent)
     announce      = torrent["announce"]
     announce_list = torrent["announce-list"]
@@ -37,6 +41,10 @@ module Firecracker
     return trackers
   end
   
+  #
+  # @torrent Hash A Torrent hash generated using String#bdecode
+  # @return Array<String> A list of TCP trackers for the given torrent
+  #
   def self.tcp_trackers(torrent)
     announce      = torrent["announce"]
     announce_list = torrent["announce-list"]
@@ -46,15 +54,25 @@ module Firecracker
       trackers << announce
     end
     
-    # TPB's tracker is no longer active
-    return trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
+    # TPBs tracker is no longer active
+    trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
   end
   
+  #
+  # @torrent Hash A Torrent hash generated using String#bdecode
+  # @return String An info_hash. Read more about it here:
+  # http://wiki.theory.org/BitTorrent_Tracker_Protocol
+  #
   def self.hash(torrent)
     Digest::SHA1.hexdigest(torrent["info"].bencode)
   end
   
-  def self.torrent(torrent, protocols = [:udp, :tcp], silent = true)    
+  #
+  # @torrent Hash A Torrent hash generated using String#bdecode
+  # @protocols Array<Symbol> Protocols that should be used. UDP is the fastest.
+  # @return Hash Seeders, leechers and the amounts of downloads
+  #
+  def self.torrent(torrent, protocols = [:udp, :tcp])    
     # UDP related trackers
     if protocols.include?(:udp)
       trackers = udp_trackers(torrent)      
@@ -65,7 +83,7 @@ module Firecracker
             hashes: [hash(torrent)]
           }).process!
         rescue
-          raise $! unless silent
+          # raise $! unless silent
         end
       end.reject(&:nil?).map(&:values).flatten
     end
@@ -81,7 +99,7 @@ module Firecracker
             hashes: [hash(torrent)]
           }).process!
         rescue
-          raise $! unless silent
+          # raise $! unless silent
         end
       end.reject(&:nil?).map(&:values).flatten
     end
