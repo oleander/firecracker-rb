@@ -84,10 +84,10 @@ Firecracker::TCPScraper.new({
   hashes: ["c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0"]
 }).process!
 
-# {
+# => {
 #   c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0: {
 #     seeders: 123,
-#     leechers, 456
+#     leechers: 456,
 #     downloads: 789
 #   }
 # }
@@ -101,10 +101,10 @@ Firecracker::UDPScraper.new({
   hashes: ["523d83e8aee1a979e66584b5304d2e8fdc9a1675"]
 }).process!
 
-# {
+# => {
 #   523d83e8aee1a979e66584b5304d2e8fdc9a1675: {
 #     seeders: 123,
-#     leechers, 456
+#     leechers: 456,
 #     downloads: 789
 #   }
 # }
