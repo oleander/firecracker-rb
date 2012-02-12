@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/firecracker/version', __FILE__)
+require File.expand_path("../lib/firecracker/version", __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Linus Oleander"]
   gem.email         = ["linus@oleander.nu"]
-  gem.description   = %q{Implements the UDP/TCP torrent scrape protocol}
-  gem.summary       = %q{Implements the UDP/TCP torrent scrape protocol}
+  gem.description   = %q{An implementation of the UDP/TCP torrent scrape protocol}
+  gem.summary       = %q{An implementation of the UDP/TCP torrent scrape protocol}
   gem.homepage      = "https://github.com/oleander.nu/firecracker-rb"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
@@ -17,4 +17,6 @@ Gem::Specification.new do |gem|
   
   gem.add_dependency("rest-client")
   gem.add_dependency("bencode_ext")
+  
+  gem.required_ruby_version = "~> 1.9.0"
 end
