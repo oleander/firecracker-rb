@@ -1,14 +1,11 @@
 describe Firecracker do
-  use_vcr_cassette "example"
+  # use_vcr_cassette "example-total"
   
   let(:keys){
     [:seeders, :leechers, :completed]
   }
   
   it "should return valid data" do
-    Firecracker.process("spec/fixtures/example.torrent").each_pair do |key, value|
-      keys.should include(key)
-      value.should > 0
-    end
+    puts Firecracker.load("spec/fixtures/example.torrent")
   end
 end
