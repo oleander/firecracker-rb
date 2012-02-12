@@ -75,7 +75,7 @@ The hash being passed is a [info_hash](http://wiki.theory.org/BitTorrent_Tracker
 
 You can in theory pass up to 72 hashes in one request.
 
-Keep in mind that if one of the passed hashes is invalid or doesn't exist, the requested server might return 404 or 400 error.  
+Keep in mind that if one of the passed hashes is invalid or doesn't exist, the requested server might return 404 or 400.  
 It's therefore recommended to make one request for each hash. 
 
 ### TCP
