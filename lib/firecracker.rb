@@ -1,10 +1,8 @@
 require "socket"
 require "firecracker/udp_scraper"
 require "firecracker/tcp_scraper"
-# require "bencode"
 require "digest/sha1"
 require "uri"
-require "yaml"
 
 module Firecracker
   #
@@ -55,7 +53,7 @@ module Firecracker
     end
     
     # TPBs tracker is no longer active
-    trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
+    return trackers.map{|t| t.gsub(/announce/, "scrape")}.reject{|t| t.match(%r{thepiratebay})}
   end
   
   #
@@ -73,6 +71,8 @@ module Firecracker
   # @return Hash Seeders, leechers and the amounts of downloads
   #
   def self.torrent(torrent, protocols = [:udp, :tcp])    
+    raise "At least one protocol needs to be passed" if protocols.empty?
+    
     # UDP related trackers
     if protocols.include?(:udp)
       trackers = udp_trackers(torrent)      
