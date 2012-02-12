@@ -1,10 +1,10 @@
 # Firecracker
 
-Implements the UDP/TCP torrent scrape protocol.
+An implementation of the [UDP](http://bittorrent.org/beps/bep_0015.html)/[TCP](http://wiki.theory.org/BitTorrentSpecification#Tracker_.27scrape.27_Convention) torrent scrape protocol.
 
-## Fetch data
+## Get started
 
-All methods below returns a hash that looks like this.
+All methods below returns a hash similar to this one.
 
 ``` ruby
 {
@@ -14,17 +14,18 @@ All methods below returns a hash that looks like this.
 }
 ```
 
-You can also specify which protocol to use by passing a second argument.
-Something like this: `[:udp, :tcp]`.
-Both udp and tcp are being used if noting is specified.
+### Specify a protocol
 
-### Pass a torrent file
+A second argument may be passed to `load`, `raw` and `calculate` to specify what protocol to use.
+An example argument would look like this `[:tcp, :udp]`, both tcp and udp are defaults.
+
+### A local torrent file
 
 ``` ruby
 Firecracker.load("path/to/file.torrent")
 ```
 
-### A raw torrent
+### A raw torrent string
 
 ``` ruby
 torrent = RestClient.get("http://mysite.com/file.torrent")
@@ -33,8 +34,7 @@ Firecracker.raw(torrent)
 
 ### A String#bdecode Hash
 
-The two methods above are just wrappers for this one.
-You can always pass a bdecoded hash if you by any chans has access to the raw stuff.
+You can always pass a bdecoded hash if you by any chance have access to the raw stuff.
 
 ``` ruby
 torrent = RestClient.get("http://mysite.com/file.torrent")
@@ -44,6 +44,11 @@ Firecracker.calculate(torrent.bdecode)
 ## Helper methods
 
 Ingoing argument (`torrent`) is from now on a [String#bdecode](https://github.com/naquad/bencode_ext) Hash.
+
+``` ruby
+require "bencode_ext"
+torrent = File.read("path/to/file.torrent").bdecode
+```
 
 ### Generate a info_hash string
 
@@ -56,10 +61,10 @@ Firecracker.hash(torrent)
 
 ``` ruby
 Firecracker.udp_trackers(torrent)
-# => ["udp://tracker.openbittorrent.com:80"]
+# => ["udp://tracker.openbittorrent.com:80", "..."]
 
 Firecracker.tcp_trackers(torrent)
-# => ["http://torrent.ubuntu.com:6969/scrape"]
+# => ["http://torrent.ubuntu.com:6969/scrape", "..."]
 ```
 
 ## UDP/TCP requests
@@ -68,10 +73,10 @@ If you for want to define your own server or/and protocol you can do it using th
 
 The hash being passed is a [info_hash](http://wiki.theory.org/BitTorrent_Tracker_Protocol) string.
 
-You can in theory pass upto 72 hashes in one request.
+You can in theory pass up to 72 hashes in one request.
 
-Keep in mind that if one of the passed hashes is invalid or doesn't exist, the requested server might return 404 or a 400 error.
-It's therefore always recommended to make one request for each hash. 
+Keep in mind that if one of the passed hashes is invalid or doesn't exist, the requested server might return 404 or 400 error.  
+It's therefore recommended to make one request for each hash. 
 
 ### TCP
 
@@ -81,18 +86,16 @@ Firecracker::TCPScraper.new({
   hashes: ["c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0"]
 }).process!
 
-# => {
-#  c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0: {
-#    seeders: 123,
-#    leechers, 456
-#    downloads: 789
-#  }
+# {
+#   c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0: {
+#     seeders: 123,
+#     leechers, 456
+#     downloads: 789
+#   }
 # }
 ```
 
 ### UDP
-
-You can pass up to 72 hashes, just as for the TCP version.
 
 ``` ruby
 Firecracker::UDPScraper.new({
@@ -100,11 +103,23 @@ Firecracker::UDPScraper.new({
   hashes: ["523d83e8aee1a979e66584b5304d2e8fdc9a1675"]
 }).process!
 
-# => {
-#  523d83e8aee1a979e66584b5304d2e8fdc9a1675: {
-#    seeders: 123,
-#    leechers, 456
-#    downloads: 789
-#  }
+# {
+#   523d83e8aee1a979e66584b5304d2e8fdc9a1675: {
+#     seeders: 123,
+#     leechers, 456
+#     downloads: 789
+#   }
 # }
 ```
+
+## How to install
+
+    [sudo] gem install firecracker
+
+## Requirements
+
+Ruby *1.9.2*.
+
+## License
+
+*Firecracker* is released under the *MIT license*.
