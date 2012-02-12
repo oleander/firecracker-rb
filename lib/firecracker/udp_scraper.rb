@@ -61,7 +61,7 @@ module Firecracker
     end
 
     def send(data)
-      Timeout::timeout(@options[:timeout]) {        
+      Timeout::timeout(timeout) {
         uri = URI.parse(tracker)
 
         socket.send([data].pack("H*"), 0, uri.host, uri.port || 80)

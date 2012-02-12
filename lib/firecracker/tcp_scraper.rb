@@ -90,8 +90,8 @@ module Firecracker
       # Is there a better solution?
       #
       def data
-        Timeout::timeout(@options[:timeout]) {
-          @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: @options[:timeout])
+        Timeout::timeout(timeout) {
+          @_data ||= RestClient.get("#{@options[:tracker]}?%s" % hash_info, timeout: timeout)
         }
       end
     end

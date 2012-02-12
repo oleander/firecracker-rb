@@ -40,5 +40,9 @@ module Firecracker
     def hashes
       @options[:hashes]
     end
+    
+    def timeout
+      @options[:timeout]
+    end
   end
 end
