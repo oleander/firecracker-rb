@@ -36,5 +36,9 @@ module Firecracker
     def debug?
       @options[:debug]
     end
+    
+    def hashes
+      @options[:hashes]
+    end
   end
 end

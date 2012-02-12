@@ -1,332 +1,339 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.blazing.de:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7193e10:downloadedi10e10:incompletei1130eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7193e10:downloadedi10e10:incompletei1130eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.irc.su:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 404
       message: Not Found
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/html
-      server: 
+      server:
       - Microsoft-IIS/7.5
-      x-powered-by: 
+      x-powered-by:
       - ASP.NET
-      date: 
+      date:
       - Mon, 19 Dec 2011 23:04:33 GMT
-      content-length: 
-      - "1245"
-    body: |
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-      <html xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-      <title>404 - File or directory not found.</title>
-      <style type="text/css">
-      <!--
-      body{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}
-      fieldset{padding:0 15px 10px 15px;} 
-      h1{font-size:2.4em;margin:0;color:#FFF;}
-      h2{font-size:1.7em;margin:0;color:#CC0000;} 
-      h3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} 
-      #header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:"trebuchet MS", Verdana, sans-serif;color:#FFF;
-      background-color:#555555;}
-      #content{margin:0 0 0 2%;position:relative;}
-      .content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}
-      -->
-      </style>
-      </head>
-      <body>
-      <div id="header"><h1>Server Error</h1></div>
-      <div id="content">
-       <div class="content-container"><fieldset>
-        <h2>404 - File or directory not found.</h2>
-        <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>
-       </fieldset></div>
-      </div>
-      </body>
-      </html>
-
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '1245'
+    body: ! "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html
+      xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\"
+      content=\"text/html; charset=iso-8859-1\"/>\n<title>404 - File or directory
+      not found.</title>\n<style type=\"text/css\">\n<!--\nbody{margin:0;font-size:.7em;font-family:Verdana,
+      Arial, Helvetica, sans-serif;background:#EEEEEE;}\nfieldset{padding:0 15px 10px
+      15px;} \nh1{font-size:2.4em;margin:0;color:#FFF;}\nh2{font-size:1.7em;margin:0;color:#CC0000;}
+      \nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \n#header{width:96%;margin:0
+      0 0 0;padding:6px 2% 6px 2%;font-family:\"trebuchet MS\", Verdana, sans-serif;color:#FFF;\nbackground-color:#555555;}\n#content{margin:0
+      0 0 2%;position:relative;}\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\n-->\n</style>\n</head>\n<body>\n<div
+      id=\"header\"><h1>Server Error</h1></div>\n<div id=\"content\">\n <div class=\"content-container\"><fieldset>\n
+      \ <h2>404 - File or directory not found.</h2>\n  <h3>The resource you are looking
+      for might have been removed, had its name changed, or is temporarily unavailable.</h3>\n
+      </fieldset></div>\n</div>\n</body>\n</html>\n"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.ilibr.org:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.csze.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7087e10:downloadedi10e10:incompletei1129eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7087e10:downloadedi10e10:incompletei1129eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://10.rarbg.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://pow7.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7296e10:downloadedi10e10:incompletei1155eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.token.ro:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://fr33dom.h33t.com:3310/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
+    headers: !!null 
     body: d5:filesde5:flagsd20:min_request_intervali1800eee
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://t2.pow7.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.ilibr.org:6969/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://t1.pow7.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7297e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://ipv4.tracker.harry.lu:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7298e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7298e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://tracker.pow7.com:80/scrape?info_hash=%03%DB%867%A8%E1o%7D%5E%3EOuW%D5%D8%7B%19%05%DC%16
-    body: 
-    headers: 
-      accept: 
-      - "*/*; q=0.5, application/xml"
-      accept-encoding: 
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
       - gzip, deflate
-      timeout: 
-      - "2"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      content-type: 
+    headers:
+      content-type:
       - text/plain
-      content-length: 
-      - "88"
-    body: "d5:filesd20:\x03\xDB\x867\xA8\xE1o}^>OuW\xD5\xD8{\x19\x05\xDC\x16d8:completei7298e10:downloadedi10e10:incompletei1156eeee"
-    http_version: "1.1"
+      content-length:
+      - '88'
+    body: ! "d5:filesd20:\x03Û\x867¨áo}^>OuWÕØ{\x19\x05Ü\x16d8:completei7298e10:downloadedi10e10:incompletei1156eeee"
+    http_version: '1.1'
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: http://tracker.pow7.com:80/scrape?info_hash=%02%95$%F34%A2%C0%9F3%05w%CA%9A5x%E1Z1%F0%8B
+    body: !!null 
+    headers:
+      accept:
+      - ! '*/*; q=0.5, application/xml'
+      accept-encoding:
+      - gzip, deflate
+      timeout:
+      - '2'
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 400
+      message: Invalid Request
+    headers:
+      content-type:
+      - text/html
+      content-length:
+      - '31'
+    body: ! '<title>Invalid Request</title>
+
+'
+    http_version: '1.1'

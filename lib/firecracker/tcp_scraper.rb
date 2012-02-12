@@ -37,7 +37,7 @@ module Firecracker
         end
         
         return {
-          @options[:hashes].first => results
+          hashes.first => results
         }
       end
       
@@ -64,9 +64,11 @@ module Firecracker
         @_raw_hash ||= if data.nil? or data.empty?
           {}
         else
-          data.gsub(/20:(.+?)d8/) do |m| 
-            d = m.unpack("H*").first 
-            "#{d.length}:#{d}d8"
+          count = 0
+          data.gsub(/20:(.+?)d8/) do |m|
+            hash = hashes[count]
+            res = "#{hash.length}:#{hash}d8"
+            count += 1; res
           end.bdecode || {}
         end
       end

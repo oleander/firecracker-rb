@@ -15,6 +15,7 @@ describe Firecracker::TCPScraper do
     
     it "should match the number of hashes" do
       raw.should have(1).keys
+      raw.keys.first.should eq(hashes.first)
     end
     
     it "should have 3 categories" do
@@ -46,6 +47,7 @@ describe Firecracker::TCPScraper do
     
     it "should match the number of hashes" do
       raw.should have(1).keys
+      raw.keys.first.should eq(hashes.first)
     end
     
     it "should have 3 categories" do

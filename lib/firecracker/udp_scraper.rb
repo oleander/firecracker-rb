@@ -44,10 +44,6 @@ module Firecracker
       @_socket ||= UDPSocket.open
     end
     
-    def hashes
-      @options[:hashes]
-    end
-    
     def request_error!
       raise "Request error. UDP server did not respond"
     end
