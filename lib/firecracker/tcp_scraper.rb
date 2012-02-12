@@ -8,7 +8,7 @@ module Firecracker
     # @return Hash
     #   Example: {
     #     c2cff4acc8f5b49fd6b93b88fc0423467fbb08b0: {
-    #       downloaded: 123,
+    #       downloads: 123,
     #       complete: 456,
     #       incomplete: 789
     #     }
