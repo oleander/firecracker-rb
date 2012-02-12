@@ -37,10 +37,16 @@ module Firecracker
       @options[:debug]
     end
     
+    #
+    # @return Array<String> A list of hashes
+    #
     def hashes
       @options[:hashes]
     end
     
+    #
+    # @return Integer Global timeout limit
+    #
     def timeout
       @options[:timeout]
     end
