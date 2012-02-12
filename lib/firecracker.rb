@@ -1,4 +1,3 @@
-require "socket"
 require "firecracker/udp_scraper"
 require "firecracker/tcp_scraper"
 require "digest/sha1"
@@ -21,7 +20,7 @@ module Firecracker
   # @return Hash Seeders, leechers and the amounts of downloads
   #
   def self.raw(raw, protocols = [:udp, :tcp])
-    Firecracker.calculate(raw.bdecode, protocols)
+    Firecracker.calculate(raw.bdecode)
   end
   
   #
